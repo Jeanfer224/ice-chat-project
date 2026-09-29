@@ -1,0 +1,7 @@
+# Codigo generado por slice2java
+common/src/main/java/ChatApp/
+
+# Gradle e IntelliJ
+.gradle/
+build/
+.idea/
