@@ -1,12 +1,20 @@
-# ice-chat-project
-Sistema de chat multiusuario por consola construido con ZeroC Ice 3.7 y Gradle multimódulo. El servidor expone una sala de chat mediante RPC y los clientes se conectan a ella desde la terminal.
+# Chat Distribuido por Consola con ZeroC Ice
 
-Módulos
-Módulo	Descripción
-common	Contrato Slice (Chat.ice) y código Java generado con slice2java (interfaces, structs, excepciones)
-server	Servant ChatRoomI (thread-safe) y lanzador ServerMain, que escucha en el puerto TCP 10000
-client	Cliente interactivo de consola con un hilo demonio que consulta mensajes nuevos cada 500 ms
-Estructura del proyecto
+Taller de **Computación en Internet I** (09810 - TIC, NRC 12378, 2026-2), Universidad Icesi.
+
+Sistema de chat multiusuario por consola construido con **ZeroC Ice 3.7** y **Gradle multimódulo**. El servidor expone una sala de chat mediante RPC y los clientes se conectan a ella desde la terminal.
+
+## Módulos
+
+| Módulo   | Descripción |
+|----------|-------------|
+| `common` | Contrato Slice (`Chat.ice`) y código Java generado con `slice2java` (interfaces, structs, excepciones) |
+| `server` | Servant `ChatRoomI` (thread-safe) y lanzador `ServerMain`, que escucha en el puerto TCP 10000 |
+| `client` | Cliente interactivo de consola con un hilo demonio que consulta mensajes nuevos cada 500 ms |
+
+## Estructura del proyecto
+
+```
 ice-chat-project/
 ├── settings.gradle
 ├── build.gradle
@@ -22,51 +30,70 @@ ice-chat-project/
     ├── build.gradle
     └── src/main/java/chat/client/
         └── ClientMain.java
-Requisitos previos
-JDK 17 o superior. Gradle 8.14 no funciona con Java 11.
-Verifica con java --version.
-Si tienes varios JDK instalados, configura JAVA_HOME apuntando al 17.
-ZeroC Ice 3.7.11 para Windows, que incluye el compilador slice2java.
-Descarga: https://download.zeroc.com/ice/3.7/Ice-3.7.11.msi
-Instálalo con las opciones por defecto.
-Verifica que la carpeta bin de la instalación esté en el Path de Windows.
-Comprueba en una terminal nueva: slice2java --version (debe mostrar 3.7.11).
-Conexión a internet la primera vez, para que Gradle descargue com.zeroc:ice:3.7.11 desde Maven Central.
+```
 
-La versión del compilador (slice2java) y la de la librería en build.gradle deben coincidir (3.7.11).
+## Requisitos previos
 
-Compilación
+1. **JDK 17 o superior.** Gradle 8.14 no funciona con Java 11.
+   - Verifica con `java --version`.
+   - Si tienes varios JDK instalados, configura `JAVA_HOME` apuntando al 17.
+2. **ZeroC Ice 3.7.11 para Windows**, que incluye el compilador `slice2java`.
+   - Descarga: https://download.zeroc.com/ice/3.7/Ice-3.7.11.msi
+   - Instálalo con las opciones por defecto.
+   - Verifica que la carpeta `bin` de la instalación esté en el `Path` de Windows.
+   - Comprueba en una terminal **nueva**: `slice2java --version` (debe mostrar `3.7.11`).
+
+
+> La versión del compilador (`slice2java`) y la de la librería en `build.gradle` deben coincidir (3.7.11).
+
+## Compilación
 
 Desde la raíz del proyecto:
 
-bash
+```bash
 ./gradlew build
+```
 
-En CMD o PowerShell: gradlew.bat build.
+En CMD o PowerShell: `gradlew.bat build`.
 
-La tarea compileSlice genera el código Java en common/src/main/java/ChatApp/ a partir de Chat.ice, y luego se compilan los tres módulos. Debe terminar en BUILD SUCCESSFUL.
+La tarea `compileSlice` genera el código Java en `common/src/main/java/ChatApp/` a partir de `Chat.ice`, y luego se compilan los tres módulos. Debe terminar en `BUILD SUCCESSFUL`.
 
-common/src/main/java/ChatApp/ es código generado y está en .gitignore. Se recrea en cada compilación, por eso slice2java debe estar instalado.
 
-Ejecución
 
-Abre tres terminales en la raíz del proyecto.
+## Ejecución
 
-Terminal 1: servidor
+Abre tres terminales en la raíz del proyecto. El servidor debe estar encendido antes de abrir los clientes.
 
-bash
+```bash
+# Terminal 1: servidor
 ./gradlew :server:run --console=plain
 
-Debe mostrar SERVIDOR ZEROC ICE INICIADO EXITOSAMENTE en el puerto 10000.
-
-Terminal 2: primer cliente
-
-bash
+# Terminal 2: primer cliente
 ./gradlew :client:run --console=plain
 
-Terminal 3: segundo cliente
-
-bash
+# Terminal 3: segundo cliente
 ./gradlew :client:run --console=plain
+```
 
-Cada cliente pide un nickname al iniciar. El servidor debe estar encendido antes de abrir los clientes.
+El servidor debe mostrar `SERVIDOR ZEROC ICE INICIADO EXITOSAMENTE` en el puerto 10000. Cada cliente pide un nickname al iniciar.
+
+### Comandos del cliente
+
+| Comando | Acción |
+|---------|--------|
+| `/users` | Lista los usuarios conectados |
+| `/exit` | Cierra sesión y sale |
+| cualquier otro texto | Se envía como mensaje a la sala |
+
+## Configuración
+
+- **Endpoint del servidor:** `default -p 10000` (TCP).
+- **Identidad del servicio:** `ChatService`.
+- **Proxy del cliente:** `ChatService:default -h 127.0.0.1 -p 10000`. Para conectar desde otra máquina, cambia el host en `ClientMain.java`.
+
+
+
+## Integrantes
+
+- Jeanfer224
+- Daniel Felipe Bautista
