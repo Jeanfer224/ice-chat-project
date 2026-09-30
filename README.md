@@ -1,7 +1,5 @@
 # Chat Distribuido por Consola con ZeroC Ice
 
-Taller de **Computación en Internet I** (09810 - TIC, NRC 12378, 2026-2), Universidad Icesi.
-
 Sistema de chat multiusuario por consola construido con **ZeroC Ice 3.7** y **Gradle multimódulo**. El servidor expone una sala de chat mediante RPC y los clientes se conectan a ella desde la terminal.
 
 ## Módulos
