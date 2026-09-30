@@ -8,4 +8,5 @@ dependencies {
 
 application {
     mainClass = 'chat.server.ServerMain'
+    applicationDefaultJvmArgs = ['-Dfile.encoding=UTF-8']
 }
